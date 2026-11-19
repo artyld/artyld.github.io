@@ -1,13 +1,11 @@
 [
   {
-    "order": 1,
     "title": "Commercial project — sample",
     "category": "commercial",
     "thumb": "https://placehold.co/800x500/e2e8f0/1e293b?text=Commercial+Work",
     "url": "projects/01-commercial-sample.html"
   },
   {
-    "order": 2,
     "title": "Personal experiment + YT video",
     "category": "personal",
     "thumb": "https://placehold.co/800x500/dcfce7/14532d?text=Personal+Work",
