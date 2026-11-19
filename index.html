@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio — Commercial & Personal Work</title>
   <style>
     :root {
-      --bg: #f6f7f9;
-      --surface: #ffffff;
+      --surface: rgba(255, 255, 255, 0.92);
       --text: #14171a;
       --muted: #5c6672;
       --accent: #0057ff;
-      --border: #e5e8ec;
+      --border: #e3e8ef;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
+      min-height: 100vh;
+      background: linear-gradient(160deg, #f8fafc 0%, #eef2f7 55%, #f4f6fa 100%);
+      background-attachment: fixed;
       color: var(--text);
       line-height: 1.5;
     }
     header {
       background: var(--surface);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
       padding: 28px 20px;
     }
@@ -37,7 +39,30 @@
       gap: 16px;
     }
     h1 { font-size: 1.6rem; font-weight: 700; }
-    .bio { color: var(--muted); max-width: 640px; margin-top: 8px; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .nav-links a:hover {
+      background: #eef3ff;
+      color: var(--accent);
+    }
+    .bio {
+      color: var(--muted);
+      max-width: 660px;
+      margin-top: 8px;
+    }
     .filters {
       display: flex;
       gap: 10px;
@@ -79,7 +104,7 @@
     }
     .card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
     }
     .thumb-wrap {
       aspect-ratio: 16 / 10;
@@ -114,7 +139,7 @@
       color: #16794c;
     }
 
-    /* Okno podgladu projektu (modal) */
+    /* Project preview modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -127,7 +152,7 @@
     }
     .modal-backdrop.open { display: flex; }
     .modal {
-      background: var(--surface);
+      background: #ffffff;
       border-radius: 12px;
       max-width: 860px;
       width: 100%;
@@ -177,18 +202,21 @@
   <header>
     <div class="container">
       <div class="top-bar">
-        <h1>Twoje Imię / Pseudonim</h1>
-        <a href="mailto:twoj@email.pl" style="color: var(--accent); text-decoration: none; font-weight: 600;">Kontakt</a>
+        <h1>Your Name / Handle</h1>
+        <nav class="nav-links" aria-label="External links">
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
+        </nav>
       </div>
       <p class="bio">
-        Krótki opis tego, czym się zajmujesz. Poniżej znajdziesz wybrane projekty komercyjne oraz prace własne po godzinach.
+        Short introduction about what you do. Below you will find selected commercial work and personal after-hours projects.
       </p>
     </div>
   </header>
 
   <main class="container">
-    <div class="filters" role="tablist" aria-label="Filtr projektów">
-      <button class="filter-btn active" data-filter="all">Wszystkie</button>
+    <div class="filters" role="tablist" aria-label="Project filters">
+      <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="commercial">Commercial Work</button>
       <button class="filter-btn" data-filter="personal">Personal Work</button>
     </div>
@@ -203,7 +231,7 @@
           <span id="modalBadge" class="badge"></span>
           <h2 id="modalTitle" style="margin-top: 8px; font-size: 1.4rem;"></h2>
         </div>
-        <button id="closeModal" class="close-btn" aria-label="Zamknij podgląd">×</button>
+        <button id="closeModal" class="close-btn" aria-label="Close preview">×</button>
       </div>
       <p id="modalDesc" class="modal-desc"></p>
       <div id="modalMedia"></div>
@@ -211,27 +239,27 @@
   </div>
 
   <script>
-    // EDYTUJ TYLKO TE DANE — dodawaj lub zmieniaj swoje projekty
+    // EDIT ONLY THIS DATA — add or update your projects
     const PROJECTS = [
       {
         id: 1,
-        title: "Projekt komercyjny — przykład",
-        category: "commercial", // "commercial" lub "personal"
+        title: "Commercial project — sample",
+        category: "commercial", // "commercial" or "personal"
         thumb: "https://placehold.co/800x500/e2e8f0/1e293b?text=Commercial+Work",
         images: [
-          "https://placehold.co/1000x600/e2e8f0/1e293b?text=Kadr+1"
+          "https://placehold.co/1000x600/e2e8f0/1e293b?text=Frame+1"
         ],
-        youtubeId: "", // wklej tutaj samo ID filmu z YouTube, np. "dQw4w9WgXcQ"
-        description: "Opis roli w projekcie, narzędzi oraz efektu końcowego (z zachowaniem zasad NDA)."
+        youtubeId: "", // paste only the YouTube video ID, e.g. "dQw4w9WgXcQ"
+        description: "Role in the project, tools used, and final outcome (respecting NDA guidelines)."
       },
       {
         id: 2,
-        title: "Eksperyment po godzinach + wideo YT",
+        title: "Personal experiment + YT video",
         category: "personal",
         thumb: "https://placehold.co/800x500/dcfce7/14532d?text=Personal+Work",
         images: [],
-        youtubeId: "", // np. wklej ID filmu, aby wyświetlić odtwarzacz w oknie podglądu
-        description: "Projekt własny zrealizowany po godzinach. Po podaniu youtubeId film odtworzy się bezpośrednio tutaj."
+        youtubeId: "", // paste a YouTube ID to display the player inside the modal preview
+        description: "Personal project created after hours. Once you add a youtubeId, the video plays right here."
       }
     ];
 
@@ -315,7 +343,7 @@
     function closeModal() {
       modal.classList.remove("open");
       modal.setAttribute("aria-hidden", "true");
-      modalMedia.innerHTML = ""; // zatrzymuje odtwarzanie wideo po zamknięciu okna
+      modalMedia.innerHTML = "";
     }
 
     filterButtons.forEach(btn => {
