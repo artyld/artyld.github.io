@@ -10,27 +10,14 @@
   <header>
     <div class="container">
       <div class="top-bar">
-        <h1> Arty W, <br> 
-          <span style="font-size: 0.95rem; font-weight: 500; color: var(--muted);">
-          Level Designer / Gameplay Designer / World Builder
-          </span>
-        </h1>
+        <h1>Your Name / Handle</h1>
         <nav class="nav-links" aria-label="External links">
-          <a href="https://www.linkedin.com/in/arty123/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://www.mobygames.com/person/754339/artur-wiechiec/credits/" target="_blank" rel="noopener noreferrer">MobyGames</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
         </nav>
       </div>
       <p class="bio">
-        Short introduction: <br>
-        Experienced in Unity and Unreal Engine <br>
-        Designing and prototyping levels <br>
-        Scripting logic, quests, events, etc. (UE4 Blueprints, Unity flow canvas) <br>
-        Filling levels with meshes, setting up lights and baking lightmaps <br>
-        Implementing dialogues, sounds and other effects <br>
-        Designing tools to assist in constructing the single player campaign <br>
-        Designing modular asset and modeling placeholder meshes <br>
-        Optimization of the final levels <br>
-        Creating basic animations of environment elements <br>
+        Short introduction about what you do. Below you will find selected commercial work and personal after-hours projects.
       </p>
     </div>
   </header>
@@ -52,10 +39,9 @@
     let activeFilter = "all";
 
     function renderProjects() {
-      const sorted = [...allProjects].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
       const filtered = activeFilter === "all"
-        ? sorted
-        : sorted.filter(p => p.category === activeFilter);
+        ? allProjects
+        : allProjects.filter(p => p.category === activeFilter);
 
       grid.innerHTML = filtered.map(project => {
         const isPersonal = project.category === "personal";
