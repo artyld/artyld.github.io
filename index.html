@@ -3,32 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio — Commercial & Personal Work</title>
+  <title>Portfolio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <div class="container">
-      <div class="top-bar">
-        <h1>Arty W / <br>
-          Level Designer / Gameplay Designer/ World Builder</h1>
-        <nav class="nav-links" aria-label="External links">
-          <a href="https://www.linkedin.com/in/arty123/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://www.mobygames.com/person/754339/artur-wiechiec/credits/" target="_blank" rel="noopener noreferrer">MobyGames</a>
-        </nav>
-      </div>
-      <p class="bio">
-        Designing game spaces from the ground up, hooked on gaming since the Commodore days. <br>
-        Off the clock, I hit the cycling trails or dive into CAD to design functional parts for 3D printing. 
-      </p>
-    </div>
-  </header>
+  <header id="siteHeader"></header>
 
   <main class="container">
     <div class="filters" role="tablist" aria-label="Project filters">
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="commercial">Commercial Gamedev Work</button>
-      <button class="filter-btn" data-filter="personal">Personal Gamedev</button>
+      <button class="filter-btn" data-filter="personal">Personal Gamedev Stuff</button>
       <button class="filter-btn" data-filter="cad">CAD & 3D Printing</button>
     </div>
 
@@ -36,10 +21,34 @@
   </main>
 
   <script>
+    const headerEl = document.getElementById("siteHeader");
     const grid = document.getElementById("projectsGrid");
     const filterButtons = document.querySelectorAll(".filter-btn");
+
+    const CATEGORY_LABELS = {
+      commercial: "Commercial Gamedev Work",
+      personal: "Personal Gamedev Stuff",
+      cad: "CAD & 3D Printing"
+    };
+
     let allProjects = [];
     let activeFilter = "all";
+
+    function renderHeader(header) {
+      const linksHtml = (header.links || [])
+        .map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`)
+        .join("");
+
+      headerEl.innerHTML = `
+        <div class="container">
+          <div class="top-bar">
+            <h1>${header.name}</h1>
+            <nav class="nav-links" aria-label="External links">${linksHtml}</nav>
+          </div>
+          <p class="bio">${header.bio}</p>
+        </div>
+      `;
+    }
 
     function renderProjects() {
       const filtered = activeFilter === "all"
@@ -47,8 +56,7 @@
         : allProjects.filter(p => p.category === activeFilter);
 
       grid.innerHTML = filtered.map(project => {
-        const isPersonal = project.category === "personal";
-        const label = isPersonal ? "Personal Work" : "Commercial Work";
+        const label = CATEGORY_LABELS[project.category] || project.category;
         return `
           <a class="card" href="${project.url}">
             <div class="thumb-wrap">
@@ -56,7 +64,7 @@
             </div>
             <div class="card-body">
               <span class="card-title">${project.title}</span>
-              <span class="badge ${isPersonal ? "personal" : ""}">${label}</span>
+              <span class="badge ${project.category}">${label}</span>
             </div>
           </a>
         `;
@@ -72,10 +80,28 @@
       });
     });
 
+    async function loadProjectMeta(code) {
+      const url = `projects/${code}.html`;
+      const res = await fetch(url);
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const article = doc.querySelector("article[data-category]");
+
+      const category = article?.dataset.category || "commercial";
+      const thumb = article?.dataset.thumb || "https://placehold.co/800x500/e2e8f0/1e293b?text=" + encodeURIComponent(code);
+      const title =
+        doc.querySelector(".project-title")?.textContent.trim() ||
+        doc.querySelector("title")?.textContent.trim() ||
+        code;
+
+      return { code, url, category, thumb, title };
+    }
+
     fetch("projects.json")
       .then(res => res.json())
-      .then(data => {
-        allProjects = data;
+      .then(async data => {
+        renderHeader(data.header);
+        allProjects = await Promise.all((data.projects || []).map(loadProjectMeta));
         renderProjects();
       })
       .catch(() => {
