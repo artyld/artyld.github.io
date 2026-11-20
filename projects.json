@@ -1,14 +1,23 @@
 [
   {
-    "title": "Commercial project — sample",
+    "order": 1,
+    "title": "Rustwater",
     "category": "commercial",
-    "thumb": "https://placehold.co/800x500/e2e8f0/1e293b?text=Commercial+Work",
+    "thumb": "thumb-01.webp",
     "url": "projects/01-commercial-sample.html"
   },
   {
-    "title": "Personal experiment + YT video",
+    "order": 2,
+    "title": "Pedestrian system quick prototype",
     "category": "personal",
-    "thumb": "https://placehold.co/800x500/dcfce7/14532d?text=Personal+Work",
+    "thumb": "thumb-02.webp",
     "url": "projects/02-personal-yt.html"
+  },
+  {
+    "order": 3,
+    "title": "Custom Bike Mount — Functional 3D Print",
+    "category": "cad",
+    "thumb": "thumb-cad-01.webp",
+    "url": "projects/03-cad-bike-mount.html"
   }
 ]
