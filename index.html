@@ -103,8 +103,9 @@
         allProjects = await Promise.all((data.projects || []).map(loadProject));
         renderProjects();
       })
-      .catch(() => {
-        grid.innerHTML = "<p>Could not load projects.json.</p>";
+     .catch(err => {
+        console.error(err);
+        grid.innerHTML = `<p>Błąd ładowania: ${err.message}</p>`;
       });
   </script>
 </body>
