@@ -175,3 +175,7 @@ h1 { font-size: 1.6rem; font-weight: 700; }
   background: #fef3c7; /* jasny bursztyn */
   color: #92400e;      /* ciemny pomarańcz/brąz */
 }
+.badge.cad {
+  background: #fef3c7;
+  color: #92400e;
+}
