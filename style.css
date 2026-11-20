@@ -150,9 +150,9 @@ h1 {
 .card-body {
   padding: 14px 16px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .card-title {
