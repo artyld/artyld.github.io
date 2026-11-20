@@ -34,18 +34,33 @@
     let allProjects = [];
     let activeFilter = "all";
 
+    function nl2br(str = "") {
+      return String(str)
+        .replace(/&/g, "&")
+        .replace(/</g, "<")
+        .replace(/>/g, ">")
+        .replace(/\n/g, "<br>");
+    }
+
     function renderHeader(header) {
       const linksHtml = (header.links || [])
         .map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`)
         .join("");
 
+      const roleHtml = header.role
+        ? `<p class="role" style="color: var(--muted); font-weight: 500; margin-top: 2px;">${nl2br(header.role)}</p>`
+        : "";
+
       headerEl.innerHTML = `
         <div class="container">
           <div class="top-bar">
-            <h1>${header.name}</h1>
+            <div>
+              <h1>${nl2br(header.name)}</h1>
+              ${roleHtml}
+            </div>
             <nav class="nav-links" aria-label="External links">${linksHtml}</nav>
           </div>
-          <p class="bio">${header.bio}</p>
+          <p class="bio">${nl2br(header.bio)}</p>
         </div>
       `;
     }
@@ -78,32 +93,34 @@
     });
 
     async function loadProject(code) {
-      const url = `projects/${code}.html`;
-      const category = code.split("_")[0].toLowerCase();
+      const cleanCode = String(code).trim().toLowerCase();
+      const url = `projects/${cleanCode}.html`;
+      const category = cleanCode.split("_")[0];
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`Nie znaleziono ${url}`);
       const html = await res.text();
       const doc = new DOMParser().parseFromString(html, "text/html");
 
       const title =
         doc.querySelector(".project-title")?.textContent.trim() ||
         doc.querySelector("title")?.textContent.trim() ||
-        code;
+        cleanCode;
 
       const thumb =
         doc.querySelector("article")?.dataset.thumb ||
         `https://placehold.co/800x500/e2e8f0/1e293b?text=${encodeURIComponent(title)}`;
 
-      return { code, url, category, title, thumb };
+      return { code: cleanCode, url, category, title, thumb };
     }
 
     fetch("projects.json")
       .then(r => r.json())
       .then(async data => {
-        renderHeader(data.header);
+        renderHeader(data.header || {});
         allProjects = await Promise.all((data.projects || []).map(loadProject));
         renderProjects();
       })
-     .catch(err => {
+      .catch(err => {
         console.error(err);
         grid.innerHTML = `<p>Błąd ładowania: ${err.message}</p>`;
       });
