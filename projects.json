@@ -1,15 +1,16 @@
 {
   "header": {
-    "name": "Arty W - Level Designer / Gameplay Designer/ World Builder",
-    "bio": "Designing game spaces from the ground up, hooked on gaming since the Commodore days. Off the clock, I hit the cycling trails or dive into CAD to design functional parts for 3D printing.",
+    "name": "Arty W",
+    "role": "Level Designer / Gameplay Designer / World Builder",
+    "bio": "Designing game spaces from the ground up, hooked on gaming since the Commodore days.\nOff the clock, I hit the cycling trails or dive into CAD to design functional parts for 3D printing.",
     "links": [
       { "label": "LinkedIn", "url": "https://www.linkedin.com/in/arty123/" },
       { "label": "MobyGames", "url": "https://www.mobygames.com/person/754339/artur-wiechiec/credits/" }
     ]
   },
   "projects": [
-    "com_01",
-    "personal_01",
-    "cad_01"
+    "Com_01",
+    "Personal_01",
+    "Cad_01"
   ]
 }
