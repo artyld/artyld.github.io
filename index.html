@@ -12,7 +12,7 @@
   <main class="container">
     <div class="filters" role="tablist" aria-label="Project filters">
       <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="commercial">Commercial Gamedev Work</button>
+      <button class="filter-btn" data-filter="com">Commercial Gamedev Work</button>
       <button class="filter-btn" data-filter="personal">Personal Gamedev Stuff</button>
       <button class="filter-btn" data-filter="cad">CAD & 3D Printing</button>
     </div>
@@ -21,15 +21,15 @@
   </main>
 
   <script>
-    const headerEl = document.getElementById("siteHeader");
-    const grid = document.getElementById("projectsGrid");
-    const filterButtons = document.querySelectorAll(".filter-btn");
-
     const CATEGORY_LABELS = {
-      commercial: "Commercial Gamedev Work",
+      com: "Commercial Gamedev Work",
       personal: "Personal Gamedev Stuff",
       cad: "CAD & 3D Printing"
     };
+
+    const headerEl = document.getElementById("siteHeader");
+    const grid = document.getElementById("projectsGrid");
+    const filterButtons = document.querySelectorAll(".filter-btn");
 
     let allProjects = [];
     let activeFilter = "all";
@@ -55,20 +55,17 @@
         ? allProjects
         : allProjects.filter(p => p.category === activeFilter);
 
-      grid.innerHTML = filtered.map(project => {
-        const label = CATEGORY_LABELS[project.category] || project.category;
-        return `
-          <a class="card" href="${project.url}">
-            <div class="thumb-wrap">
-              <img src="${project.thumb}" alt="${project.title}" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <span class="card-title">${project.title}</span>
-              <span class="badge ${project.category}">${label}</span>
-            </div>
-          </a>
-        `;
-      }).join("");
+      grid.innerHTML = filtered.map(p => `
+        <a class="card" href="${p.url}">
+          <div class="thumb-wrap">
+            <img src="${p.thumb}" alt="${p.title}" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <span class="card-title">${p.title}</span>
+            <span class="badge ${p.category}">${CATEGORY_LABELS[p.category] || p.category}</span>
+          </div>
+        </a>
+      `).join("");
     }
 
     filterButtons.forEach(btn => {
@@ -80,28 +77,30 @@
       });
     });
 
-    async function loadProjectMeta(code) {
+    async function loadProject(code) {
       const url = `projects/${code}.html`;
+      const category = code.split("_")[0].toLowerCase();
       const res = await fetch(url);
       const html = await res.text();
       const doc = new DOMParser().parseFromString(html, "text/html");
-      const article = doc.querySelector("article[data-category]");
 
-      const category = article?.dataset.category || "commercial";
-      const thumb = article?.dataset.thumb || "https://placehold.co/800x500/e2e8f0/1e293b?text=" + encodeURIComponent(code);
       const title =
         doc.querySelector(".project-title")?.textContent.trim() ||
         doc.querySelector("title")?.textContent.trim() ||
         code;
 
-      return { code, url, category, thumb, title };
+      const thumb =
+        doc.querySelector("article")?.dataset.thumb ||
+        `https://placehold.co/800x500/e2e8f0/1e293b?text=${encodeURIComponent(title)}`;
+
+      return { code, url, category, title, thumb };
     }
 
     fetch("projects.json")
-      .then(res => res.json())
+      .then(r => r.json())
       .then(async data => {
         renderHeader(data.header);
-        allProjects = await Promise.all((data.projects || []).map(loadProjectMeta));
+        allProjects = await Promise.all((data.projects || []).map(loadProject));
         renderProjects();
       })
       .catch(() => {
