@@ -1,23 +1,15 @@
-[
-  {
-    "order": 1,
-    "title": "Rustwater",
-    "category": "commercial",
-    "thumb": "thumb-01.webp",
-    "url": "projects/01-commercial-sample.html"
+{
+  "header": {
+    "name": "Arty W - Level Designer / Gameplay Designer/ World Builder"
+    "bio": "Designing game spaces from the ground up, hooked on gaming since the Commodore days. Off the clock, I hit the cycling trails or dive into CAD to design functional parts for 3D printing.": [
+      { "label": "LinkedIn", "url": "https://www.linkedin.com/in/arty123/" },
+      { "label": "MobyGames", "url": "https://www.mobygames.com/person/754339/artur-wiechiec/credits/" }
+    ]
   },
-  {
-    "order": 2,
-    "title": "Pedestrian system quick prototype",
-    "category": "personal",
-    "thumb": "thumb-02.webp",
-    "url": "projects/02-personal-yt.html"
-  },
-  {
-    "order": 3,
-    "title": "Custom Bike Mount — Functional 3D Print",
-    "category": "cad",
-    "thumb": "thumb-cad-01.webp",
-    "url": "projects/03-cad-bike-mount.html"
-  }
-]
+  "projects": [
+    "Com_01",
+    "Personal_01",
+    "Cad_01"
+  ]
+}
+
